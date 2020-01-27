@@ -1,0 +1,22 @@
+{
+	"name": "g105b/drng",
+	"description": "Deterministic random number generator.",
+
+	"require": {
+		"php": ">=7.4"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "8.*"
+	},
+
+	"autoload": {
+		"psr-4": {
+			"g105b\\DRNG\\": "./src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"g105b\\DRNG\\Test\\": "./test/phpunit"
+		}
+	}
+}
