@@ -19,4 +19,12 @@ class RandomTest extends TestCase {
 		$output2 = $sut2->getBytes(16);
 		self::assertSame($output1, $output2);
 	}
+
+	public function testSequenceIsNotSame() {
+		$sut = new Random();
+		$output1 = $sut->getBytes(16);
+		$output2 = $sut->getBytes(16);
+
+		self::assertNotSame($output1, $output2);
+	}
 }
