@@ -169,4 +169,49 @@ class RandomTest extends TestCase {
 		$sut = new Random($seed);
 		self::assertNotNull($sut->getBytes(1));
 	}
+
+	public function testGetScalar() {
+		$sut = new Random();
+
+		for($i = 0; $i < 1000; $i++) {
+			$value = $sut->getScalar();
+			self::assertIsFloat($value);
+			self::assertGreaterThanOrEqual(0, $value);
+			self::assertLessThanOrEqual(1, $value);
+		}
+	}
+
+	public function testGetScalarUpTo255() {
+		$sut = new Random();
+
+		for($i = 0; $i < 1000; $i++) {
+			$value = $sut->getScalar(255);
+			self::assertIsFloat($value);
+			self::assertGreaterThanOrEqual(0, $value);
+			self::assertLessThanOrEqual(255, $value);
+		}
+	}
+
+	public function testGetScalarDeterministic() {
+		$seed = random_bytes(16);
+		$sut1 = new Random($seed);
+		$sut2 = new Random($seed);
+
+		for($i = 0; $i < 1000; $i++) {
+			$value1 = $sut1->getScalar(PHP_INT_MAX);
+			$value2 = $sut2->getScalar(PHP_INT_MAX);
+			self::assertSame($value1, $value2);
+		}
+	}
+
+	public function testGetScalarNotDeterministicWithDifferentSeeds() {
+		$sut1 = new Random(random_bytes(16));
+		$sut2 = new Random(random_bytes(16));
+
+		for($i = 0; $i < 1000; $i++) {
+			$value1 = $sut1->getScalar(PHP_INT_MAX);
+			$value2 = $sut2->getScalar(PHP_INT_MAX);
+			self::assertNotSame($value1, $value2);
+		}
+	}
 }

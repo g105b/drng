@@ -76,6 +76,11 @@ class Random {
 		return $intValue;
 	}
 
+	public function getScalar(float $max = 1.0):float {
+		$intScalar = $this->getInt(0, PHP_INT_MAX);
+		return ($max * $intScalar) / PHP_INT_MAX;
+	}
+
 	/** @throws SeedSizeOutOfBoundsException */
 	private function checkSeedSize(string $seed):void {
 		$strLen = strlen($seed);
