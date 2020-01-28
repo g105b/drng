@@ -1,8 +1,10 @@
 <?php
-namespace g105b\DRNG\Test;
+namespace g105b\drng\Test;
 
+use Exception;
+use g105b\drng\SeedSizeOutOfBoundsException;
 use PHPUnit\Framework\TestCase;
-use g105b\DRNG\Random;
+use g105b\drng\Random;
 
 class RandomTest extends TestCase {
 	public function testSequenceIsDeterministic() {
@@ -48,5 +50,27 @@ class RandomTest extends TestCase {
 		}
 
 		self::assertEquals($expectedLength, strlen($totalBytes));
+	}
+
+	public function testSeedSizeOutOfBounds() {
+		for($i = 0; $i < 128; $i++) {
+			$exception = null;
+
+			try {
+				$bytes = str_repeat("\0", $i);
+				new Random($bytes);
+			}
+			catch(SeedSizeOutOfBoundsException $exception) {}
+
+			if($i > 0 && $i % 16 === 0) {
+				self::assertNull($exception);
+			}
+			else {
+				self::assertNotNull(
+					$exception,
+					"Exception should be thrown when byte size is not a multiple of 16"
+				);
+			}
+		}
 	}
 }

@@ -12,12 +12,12 @@
 
 	"autoload": {
 		"psr-4": {
-			"g105b\\DRNG\\": "./src"
+			"g105b\\drng\\": "./src"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"g105b\\DRNG\\Test\\": "./test/phpunit"
+			"g105b\\drng\\Test\\": "./test/phpunit"
 		}
 	}
 }

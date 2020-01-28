@@ -1,5 +1,5 @@
 <?php
-namespace g105b\DRNG;
+namespace g105b\drng;
 
 class Random {
 	private string $seedBytes;
@@ -13,6 +13,8 @@ class Random {
 		if(is_null($seedBytes)) {
 			$seedBytes = random_bytes(16);
 		}
+
+		$this->checkSeedSize($seedBytes);
 
 		$this->seedBytes = $seedBytes;
 // We are using OpenSSL in AES counter method, so need to retain a counter.
@@ -30,6 +32,14 @@ class Random {
 			OPENSSL_RAW_DATA,
 			$this->getIv($size)
 		);
+	}
+
+	/** @throws SeedSizeOutOfBoundsException */
+	private function checkSeedSize(string $seed):void {
+		$strlen = strlen($seed);
+		if($strlen === 0 || $strlen % 16 !== 0) {
+			throw new SeedSizeOutOfBoundsException();
+		}
 	}
 
 	/**
