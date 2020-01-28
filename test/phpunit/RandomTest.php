@@ -3,6 +3,7 @@ namespace g105b\drng\Test;
 
 use g105b\drng\MinMaxOutOfBoundsException;
 use g105b\drng\SeedSizeOutOfBoundsException;
+use g105b\drng\StringSeed;
 use PHPUnit\Framework\TestCase;
 use g105b\drng\Random;
 use TypeError;
@@ -158,5 +159,14 @@ class RandomTest extends TestCase {
 				$sut2->getInt(-1235, 5678)
 			);
 		}
+	}
+
+	public function testConstructWithStringSeed() {
+		$seed = self::createMock(StringSeed::class);
+		$seed->method("__toString")
+			->willReturn(random_bytes(16));
+
+		$sut = new Random($seed);
+		self::assertNotNull($sut->getBytes(1));
 	}
 }
