@@ -108,7 +108,7 @@ class RandomTest extends TestCase {
 		self::expectException(TypeError::class);
 		$sut = new Random();
 		$minInt = PHP_INT_MIN;
-		$sut->getInt($minInt - 1, 0);
+		$sut->getInt($minInt * 2, 0);
 	}
 
 	public function testGetIntDifferentSeedsNotDeterministic() {
@@ -118,10 +118,19 @@ class RandomTest extends TestCase {
 		$total2 = 0;
 
 		for($i = 0; $i < 100; $i++) {
-			$total1 += $sut1->getInt(0, 255);
-			$total2 += $sut2->getInt(0, 255);
+			$int1 = $sut1->getInt(0, 255);
+			self::assertGreaterThanOrEqual(0, $int1);
+			self::assertLessThanOrEqual(255, $int1);
+			$total1 += $int1;
+
+			$int2 = $sut2->getInt(0, 255);
+			self::assertGreaterThanOrEqual(0, $int2);
+			self::assertLessThanOrEqual(255, $int2);
+			$total2 += $int2;
 		}
 
 		self::assertNotEquals($total1, $total2);
+		self::assertGreaterThan(0, $total1);
+		self::assertGreaterThan(0, $total2);
 	}
 }

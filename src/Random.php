@@ -42,6 +42,38 @@ class Random {
 		if($min > $max) {
 			throw new MinMaxOutOfBoundsException();
 		}
+
+		$bitRegister = 0;
+		$numBytes = 0;
+		$bitMask = 0;
+		$range = $max - $min;
+
+		while($range > 0) {
+			if($bitRegister % PHP_INT_SIZE === 0) {
+				$numBytes++;
+			}
+
+			$bitRegister++;
+			$range >>= 1;
+			$bitMask = $bitMask << 1 | 1;
+		}
+		$offset = $min;
+
+		do {
+			$bytes = $this->getBytes($numBytes);
+
+			$intValue = 0;
+			for($i = 0; $i < $numBytes; $i++) {
+				$intValue |= ord($bytes[$i])
+					<< ($i * PHP_INT_SIZE);
+			}
+
+			$intValue &= $bitMask;
+			$intValue += $offset;
+		}
+		while($intValue > $max || $intValue < $min);
+
+		return $intValue;
 	}
 
 	/** @throws SeedSizeOutOfBoundsException */
