@@ -27,4 +27,26 @@ class RandomTest extends TestCase {
 
 		self::assertNotSame($output1, $output2);
 	}
+
+	public function testManyCalls() {
+		$sut = new Random();
+		$totalBytes = "";
+		$expectedLength = 0;
+		$previousByteArray = [];
+
+		for($i = 0; $i < 500; $i++) {
+			$newBytes = $sut->getBytes(16);
+			$expectedLength += 16;
+
+			$totalBytes .= $newBytes;
+			self::assertNotContains(
+				$newBytes,
+				$previousByteArray,
+				"Random bytes should never provide the same sequence twice"
+			);
+			$previousByteArray []= $totalBytes;
+		}
+
+		self::assertEquals($expectedLength, strlen($totalBytes));
+	}
 }

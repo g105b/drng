@@ -51,7 +51,7 @@ class Random {
 				$originalAesCounter & 0xFF
 			) . $iv;
 
-			$originalAesCounter--;
+			$originalAesCounter >>= 8;
 		}
 
 		return str_pad(
