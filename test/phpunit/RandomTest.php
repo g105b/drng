@@ -133,4 +133,30 @@ class RandomTest extends TestCase {
 		self::assertGreaterThan(0, $total1);
 		self::assertGreaterThan(0, $total2);
 	}
+
+	public function testGetIntSameSeedDeterministic() {
+		$seed = random_bytes(16);
+		$sut1 = new Random($seed);
+		$sut2 = new Random($seed);
+
+		for($i = 0; $i < 1000; $i++) {
+			self::assertSame(
+				$sut1->getInt(-2345, 4567),
+				$sut2->getInt(-2345, 4567)
+			);
+		}
+	}
+
+	public function testGetIntSameSeedDifferentBoundsNonDeterministic() {
+		$seed = random_bytes(16);
+		$sut1 = new Random($seed);
+		$sut2 = new Random($seed);
+
+		for($i = 0; $i < 1000; $i++) {
+			self::assertNotSame(
+				$sut1->getInt(-1234, 5678),
+				$sut2->getInt(-1235, 5678)
+			);
+		}
+	}
 }
