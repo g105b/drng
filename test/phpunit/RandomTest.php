@@ -5,6 +5,7 @@ use g105b\drng\MinMaxOutOfBoundsException;
 use g105b\drng\SeedSizeOutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use g105b\drng\Random;
+use TypeError;
 
 class RandomTest extends TestCase {
 	public function testSequenceIsDeterministic() {
@@ -94,5 +95,33 @@ class RandomTest extends TestCase {
 			$int = $sut->getInt($i, $i);
 			self::assertSame($i, $int);
 		}
+	}
+
+	public function testGetIntHigherThanMaxInt() {
+		self::expectException(TypeError::class);
+		$sut = new Random();
+		$maxInt = PHP_INT_MAX;
+		$sut->getInt(0, $maxInt + 1);
+	}
+
+	public function testGetIntLowerThanMaxInt() {
+		self::expectException(TypeError::class);
+		$sut = new Random();
+		$minInt = PHP_INT_MIN;
+		$sut->getInt($minInt - 1, 0);
+	}
+
+	public function testGetIntDifferentSeedsNotDeterministic() {
+		$sut1 = new Random();
+		$sut2 = new Random();
+		$total1 = 0;
+		$total2 = 0;
+
+		for($i = 0; $i < 100; $i++) {
+			$total1 += $sut1->getInt(0, 255);
+			$total2 += $sut2->getInt(0, 255);
+		}
+
+		self::assertNotEquals($total1, $total2);
 	}
 }
