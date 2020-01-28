@@ -36,8 +36,8 @@ class Random {
 
 	/** @throws SeedSizeOutOfBoundsException */
 	private function checkSeedSize(string $seed):void {
-		$strlen = strlen($seed);
-		if($strlen === 0 || $strlen % 16 !== 0) {
+		$strLen = strlen($seed);
+		if($strLen === 0 || $strLen % 16 !== 0) {
 			throw new SeedSizeOutOfBoundsException();
 		}
 	}

@@ -1,7 +1,6 @@
 <?php
 namespace g105b\drng\Test;
 
-use Exception;
 use g105b\drng\SeedSizeOutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use g105b\drng\Random;
