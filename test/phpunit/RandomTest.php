@@ -29,6 +29,14 @@ class RandomTest extends TestCase {
 		self::assertNotSame($output1, $output2);
 	}
 
+	public function testByteSizeReturned() {
+		$sut = new Random();
+		for($i = 1; $i < 1024; $i++) {
+			$bytes = $sut->getBytes($i);
+			self::assertEquals($i, strlen($bytes));
+		}
+	}
+
 	public function testManyCalls() {
 		$sut = new Random();
 		$totalBytes = "";
