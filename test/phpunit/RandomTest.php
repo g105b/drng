@@ -1,6 +1,7 @@
 <?php
 namespace g105b\drng\Test;
 
+use g105b\drng\MinMaxOutOfBoundsException;
 use g105b\drng\SeedSizeOutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use g105b\drng\Random;
@@ -78,6 +79,20 @@ class RandomTest extends TestCase {
 					"Exception should be thrown when byte size is not a multiple of 16"
 				);
 			}
+		}
+	}
+
+	public function testGetIntOutOfBounds() {
+		$sut = new Random();
+		self::expectException(MinMaxOutOfBoundsException::class);
+		$sut->getInt(100, 10);
+	}
+
+	public function testGetIntSameBounds() {
+		$sut = new Random();
+		for($i = 1; $i < 1024; $i++) {
+			$int = $sut->getInt($i, $i);
+			self::assertSame($i, $int);
 		}
 	}
 }

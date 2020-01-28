@@ -34,6 +34,16 @@ class Random {
 		);
 	}
 
+	public function getInt(int $min, int $max):int {
+		if($min === $max) {
+			return $min;
+		}
+
+		if($min > $max) {
+			throw new MinMaxOutOfBoundsException();
+		}
+	}
+
 	/** @throws SeedSizeOutOfBoundsException */
 	private function checkSeedSize(string $seed):void {
 		$strLen = strlen($seed);
