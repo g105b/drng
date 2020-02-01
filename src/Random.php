@@ -2,6 +2,7 @@
 namespace g105b\drng;
 
 class Random {
+	const BYTE_SIZE = 16;
 	private string $seedBytes;
 	private int $aesCounter;
 
@@ -11,14 +12,13 @@ class Random {
 	 */
 	public function __construct(string $seedBytes = null) {
 		if(is_null($seedBytes)) {
-			$seedBytes = random_bytes(16);
+			$seedBytes = random_bytes(self::BYTE_SIZE);
 		}
 
-		$this->checkSeedSize($seedBytes);
-
-		$this->seedBytes = $seedBytes;
 // We are using OpenSSL in AES counter method, so need to retain a counter.
 		$this->aesCounter = 0;
+		$this->checkSeedSize($seedBytes);
+		$this->seedBytes = $seedBytes;
 	}
 
 	/**
@@ -34,6 +34,10 @@ class Random {
 		);
 	}
 
+	/**
+	 * Return an integer greater than or equal to $min, and less than or
+	 * equal to $max.
+	 */
 	public function getInt(int $min, int $max):int {
 		if($min === $max) {
 			return $min;
@@ -48,17 +52,22 @@ class Random {
 		$bitMask = 0;
 		$range = $max - $min;
 
+// Generate the $bitMask to remove from the $intValue when finding a valid int:
 		while($range > 0) {
 			if($bitRegister % PHP_INT_SIZE === 0) {
 				$numBytes++;
 			}
 
 			$bitRegister++;
+// This bitwise operator is more efficient than: $range = floor($range / 2)
 			$range >>= 1;
+// Shift the bitmask 1 bit left. The | 1 ensures the first iteration is set
+// to 1 when the bitMask has no 1 bits in it.
 			$bitMask = $bitMask << 1 | 1;
 		}
 		$offset = $min;
 
+// Brute-force find an integer value that falls within our requested range.
 		do {
 			$bytes = $this->getBytes($numBytes);
 
@@ -76,6 +85,9 @@ class Random {
 		return $intValue;
 	}
 
+	/**
+	 * Return a floating point value between 0 and $max.
+	 */
 	public function getScalar(float $max = 1.0):float {
 		$intScalar = $this->getInt(0, PHP_INT_MAX);
 		return ($max * $intScalar) / PHP_INT_MAX;
