@@ -24,5 +24,6 @@ class StringSeedTest extends TestCase {
 		$sut = new StringSeed($inputString);
 		$seedValue = (string)$sut;
 		self::assertStringStartsWith($inputString, $seedValue);
+		self::assertGreaterThan(strlen($inputString), strlen($seedValue));
 	}
 }

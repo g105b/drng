@@ -1,0 +1,3 @@
+Deterministic random number generator
+=====================================
+
