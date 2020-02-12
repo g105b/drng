@@ -10,11 +10,11 @@ jobs:
       - uses: actions/checkout@v2
       - uses: php-actions/composer@v1
 
-      - name: Persist dependencies
+      - name: Persist working directory
         uses: actions/upload-artifact@v1
         with:
-          name: vendor
-          path: vendor/
+          name: pwd
+          path: ./
 
   test:
     runs-on: ubuntu-latest
@@ -24,6 +24,6 @@ jobs:
       - name: Download persisted dependencies
         uses: actions/download-artifact@v1
         with:
-          name: vendor
+          name: pwd
 
       - uses: php-actions/phpunit@v1
