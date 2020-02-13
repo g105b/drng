@@ -9,6 +9,19 @@ Each instance of the `Random` class maintains its AES counter, so there is theor
 
 *****
 
+Installation
+------------
+
+Composer can be used to install this library into your project. `composer require g105b/drng` will install the latest version. Alternatively, you can modify your project's `composer.json` manually:
+
+```json
+{
+        "require": {
+                "g105b/drng": "1.*"        
+        }
+}
+```
+
 Usage example
 -------------
 
