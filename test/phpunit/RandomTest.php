@@ -214,4 +214,20 @@ class RandomTest extends TestCase {
 			self::assertNotSame($value1, $value2);
 		}
 	}
+
+	public function testReset() {
+		$sut = new Random(random_bytes(16));
+		$firstValue = null;
+
+		for($i = 0; $i < 50; $i++) {
+			$value = $sut->getBytes(128);
+
+			if(is_null($firstValue)) {
+				$firstValue = $value;
+			}
+		}
+
+		$sut->reset();
+		self::assertEquals($firstValue, $sut->getBytes(128));
+	}
 }

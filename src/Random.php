@@ -130,4 +130,8 @@ class Random {
 			STR_PAD_LEFT
 		);
 	}
+
+	public function reset():void {
+		$this->aesCounter = 0;
+	}
 }
