@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Download persisted dependencies
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4.1.7
         with:
           name: pwd
           path: ./
